@@ -1,0 +1,9 @@
+<div class="divCss">
+  <h2>註冊頁面</h2>
+  <div>名字：<input [(ngModel)]="name"></div>
+  <div>手機號碼：<input [(ngModel)]="userphone"></div>
+  <div>年齡：<input type="number" [(ngModel)]="age"></div>
+  <div>密碼：<input type="password" [(ngModel)]="password"></div>
+  <button (click)="register()">註冊</button>
+  <p>已經有帳號了嗎？<button (click)="goToLogin()">登入</button></p>
+</div>

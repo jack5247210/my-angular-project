@@ -1,0 +1,23 @@
+
+.divCss {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh; // 讓它在畫面中間
+
+  // 包裹輸入框的容器
+  h5 {
+    width: 300px;
+    text-align: left;
+    margin-bottom: 1.5rem;
+    input { width: 100%; margin-top: 8px; }
+  }
+
+  button {
+    width: 200px;
+    color: black;
+    margin-bottom: 10px;
+    height: 45px;
+  }
+}

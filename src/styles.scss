@@ -1,0 +1,38 @@
+// 定義品牌色
+$primary-color: #3f51b5;
+$accent-color: #ff4081;
+$bg-light: #f8f9fa;
+$border-color: #e0e0e0;
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f4f6f4; // 改為淺灰色底，讓白色卡片浮現
+  color: #333;
+}
+
+// 讓原生 Input 變得現代化
+input:not([type="radio"]):not([type="checkbox"]), select {
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  padding: 10px 12px;
+  transition: border-color 0.2s;
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+  }
+}
+
+// 統一按鈕風格
+button {
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 8px 16px;
+  background-color: #D56927;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  &:hover { opacity: 0.9; transform: translateY(-1px); }
+  &:active { transform: translateY(0); }
+}

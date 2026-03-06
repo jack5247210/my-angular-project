@@ -1,0 +1,33 @@
+.header-container {
+  display: flex;
+  align-items: center; // 讓所有元件垂直居中對齊
+  flex-wrap: wrap;    // 螢幕太小時會自動換行
+  gap: 15px;
+  padding: 20px;
+  background-color: #f8f9fa; // 給一點背景色方便辨識
+  border-radius: 8px;
+
+  h3 {
+    margin: 0;
+    white-space: nowrap; // 防止標題被擠壓斷行
+  }
+
+  .search-input {
+    height: 54px;      // 讓傳統輸入框與 Material 欄位高度接近
+    padding: 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; // 確保 padding 不會撐大寬度
+  }
+
+  // 針對 Material Form Field 的調整
+  mat-form-field {
+    // 移除 Material 預設的底部間距 (原本是用來放錯誤訊息的)
+    margin-bottom: -1.25em;
+  }
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+}

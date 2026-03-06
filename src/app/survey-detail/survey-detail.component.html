@@ -1,0 +1,84 @@
+<div class="survey-container">
+  <h1>顧客滿意度問卷</h1>
+<!-- 利用一個開關來決定顯示哪一部分  ! 代表「反轉」。
+
+!false 就會變成 true。
+
+!true 就會變成 false。
+
+為什麼要這樣寫？ 因為這段程式碼的邏輯是：「如果現在『不是』預覽模式（!isPreview），就顯示填寫表單；否則（else）顯示預覽模板。-->
+<div *ngIf="!isPreview; else previewTemplate">
+  <div class="info-section">
+  <p>會員手機： {{ memberTel }}</p>
+  <p>用餐日期： {{ currentDay | date:'yyyy/MM/dd' }}</p>
+  <p>用餐時間： {{ currentDay | date:'HH:mm' }}</p>
+  </div>
+
+  <p>今日令您滿意的餐點是（可複選）：</p>
+
+<section class="example-section">
+  @for (dish of formData.bestDish; track dish.name) {
+    <mat-checkbox
+      [(ngModel)]="dish.checkbox"
+      name="dish-{{$index}}">
+      {{ dish.name }}
+    </mat-checkbox>
+  }
+</section>
+  <p>今日最需要改進的地方是：</p>
+  <input [(ngModel)]="formData.improvement">
+
+  <mat-radio-group [(ngModel)]="formData.willReturn">
+  <p>您是否願意再次光臨？</p>
+  <mat-radio-button value="願意">是</mat-radio-button>
+  <mat-radio-button value="不願意">否</mat-radio-button>
+  <mat-radio-button value="不確定">不確定</mat-radio-button>
+  </mat-radio-group>
+
+
+  <mat-radio-group [(ngModel)]="formData.willRecommend">
+  <p>您是否願意推薦給親友？</p>
+  <mat-radio-button value="願意">是</mat-radio-button>
+  <mat-radio-button value="不願意">否</mat-radio-button>
+  <mat-radio-button value="不確定">不確定</mat-radio-button>
+  </mat-radio-group>
+
+  <div class="rating-container">
+    <p>評分項目 (1-5分)</p>
+    <div>餐點口味：<input type="number" min="1" max="5" [(ngModel)]="formData.ratings.taste"></div>
+    <div>食材新鮮：<input type="number" min="1" max="5" [(ngModel)]="formData.ratings.fresh"></div>
+    <div>出餐速度：<input type="number" min="1" max="5" [(ngModel)]="formData.ratings.speed"></div>
+    <div>環境整潔：<input type="number" min="1" max="5" [(ngModel)]="formData.ratings.clean"></div>
+    <div>用餐氛圍：<input type="number" min="1" max="5" [(ngModel)]="formData.ratings.music"></div>
+    <div>性價比：<input type="number" min="1" max="5" [(ngModel)]="formData.ratings.price"></div>
+  </div>
+
+  <hr>
+  <button (click)="goToPreview()">前往預覽</button>
+</div>
+<!-- 這部分預設是隱藏的，只有當 isPreview 變成 true 時才會「現身」。  <ng-template>是一個 Angular 內建的特殊元素（標籤） #在Angular 裡叫做 「模板引用變數」 -->
+<ng-template #previewTemplate>
+  <div class="preview-box" style="border: 2px solid #ccc; padding: 20px; background: #fff;">
+    <h2>確認您的回答</h2>
+    <p><b>會員手機：</b> {{ memberTel }}</p>
+    <p><b>用餐日期：</b> {{ currentDay | date:'yyyy/MM/dd' }}</p>
+    <p><b>用餐時間：</b> {{ currentDay | date:'HH:mm' }}</p>
+    <p><b>當前滿意的餐點：</b> {{ selectedDishNames.join(', ') }}</p>
+    <p><b>改進建議：</b> {{ formData.improvement }}</p>
+    <p><b>再次光臨：</b> {{ formData.willReturn }}</p>
+    <p><b>推薦給親友：</b> {{ formData.willRecommend }}</p>
+
+    <h3>評分摘要</h3>
+    <ul>
+      <li>口味：{{ formData.ratings.taste }} 分</li>
+      <li>新鮮度：{{ formData.ratings.fresh }} 分</li>
+      <li>速度：{{ formData.ratings.speed }} 分</li>
+      <li>環境：{{ formData.ratings.clean }} 分</li>
+      <li>氛圍：{{ formData.ratings.music }} 分</li>
+      <li>性價比：{{ formData.ratings.price }} 分</li>
+    </ul>
+
+    <button (click)="backToEdit()">返回修改</button>
+    <button (click)="submitSurvey()" style="background-color: #28a745; color: white;">確認送出</button>
+  </div>
+</ng-template>

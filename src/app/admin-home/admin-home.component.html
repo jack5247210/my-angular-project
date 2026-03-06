@@ -1,0 +1,112 @@
+<div class="header-container">
+  <h4>管理員，您好</h4>
+  <h3>問卷查詢：</h3>
+  </div>
+  <input class="search-input" (keyup)="applyFilter($event)" placeholder="輸入名稱或狀態..." #input>
+  <!-- <mat-form-field>是 Angular Material 的標準表單包裝器
+
+<mat-label>顯示在輸入框上方的文字標題「選擇日期範圍」
+
+<mat-date-range-input>這個輸入框要跟下面那個名牌叫 #picker 的日期彈窗連動。
+
+(dateChange)="applyDateFilter(...)"：這是一個事件監聽。當使用者選好結束日期後，立刻執行 applyDateFilter 這個函式，並把開始和結束日期的值傳進去 -->
+  <mat-form-field>
+    <mat-label>選擇日期範圍</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate placeholder="開始日期" #startDate>
+      <input matEndDate placeholder="結束日期" #endDate (dateChange)="applyDateFilter(startDate.value, endDate.value)">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+  <br>
+
+  <button mat-raised-button color="primary" (click)="addNewSurvey()"
+            style="background-color: #3f51b5; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">
+      + 新增問卷
+    </button>
+
+
+<!-- [dataSource]: 這是表格的靈魂。如果你在 TypeScript 檔案裡更新了 dataSource 的內容，表格會自動重新渲染。
+matSort 與 (matSortChange): 這兩者通常搭配使用。matSort 負責讓標題變成可點擊狀態，而 (matSortChange) 則負責處理點擊後的邏輯（例如：重新向 API 請求排序後的數據，或在前端進行簡單排序）。
+指令式設計: Angular Material 使用「指令（Directive）」的方式來擴充原生 HTML <table> 的功能，這讓開發者不需要寫複雜的 DOM 操作。 -->
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+       class="mat-elevation-z8">
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> 操作 </th>
+    <td mat-cell *matCellDef="let element">
+      <button (click)="deleteElement(element)"
+              style="color: #f44336; border: 1px solid #f44336; background: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+        刪除
+      </button>
+    </td>
+  </ng-container>
+
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+      No.
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+      Name
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="status">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>狀態</th>
+  <td mat-cell *matCellDef="let element">
+    <a [routerLink]="['/survey', element.position]"
+       style="color: #3f51b5; cursor: pointer; font-weight: bold;">
+      {{element.status}}
+    </a>
+  </td>
+</ng-container>
+
+  <!-- Symbol Column -->
+
+  <ng-container matColumnDef="startTime">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by start time">
+      開始時間
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.startTime}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="endTime">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by end time">
+      結束時間
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.endTime}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="result">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header> 結果 </th>
+  <td mat-cell *matCellDef="let element">
+    @if (element.result === '前往') {
+      <a [routerLink]="['/chart']"
+         style="color: #3f51b5; cursor: pointer; text-decoration: underline;">
+        查看分析圖表
+      </a>
+    } @else {
+      <span>{{element.result}}</span>
+    }
+  </td>
+</ng-container>
+<!-- 表格顯示的欄位順序完全由 TypeScript 裡的 displayedColumns 陣列元素順序決定，而不是由 HTML 中定義的順序決定。 -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+<mat-paginator
+  [pageSizeOptions]="[5, 10, 20]"
+  showFirstLastButtons
+  aria-label="選擇問卷分頁">
+</mat-paginator>

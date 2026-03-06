@@ -1,0 +1,74 @@
+<h1>問卷題目設定</h1>
+<p>題目</p><input type="text" [(ngModel)]="questionTitle" placeholder="請輸入題目...">
+<div style="margin-bottom: 20px;">
+    <label for="typeSelect">選擇題目類型：</label>
+    <select id="typeSelect" [(ngModel)]="selectedType">
+      <option value="Single">單選題</option>
+      <option value="Multiple">多選題</option>
+      <option value="shortAnswer">簡答題</option>
+    </select>
+  </div>
+
+  <div *ngIf="selectedType === 'Single'">
+
+  <div *ngFor="let opt of options; let i = index" style="margin-bottom: 8px;">
+<!-- 鎖定iput type是radio -->
+    <input type="radio" disabled>
+
+    <input [(ngModel)]="options[i]" [placeholder]="'選項' + (i + 1)">
+
+    <button (click)="removeOption(i)" style="color: red; margin-left: 5px;">刪除</button>
+
+  </div> <button (click)="addOption()">+ 新增選項</button>
+</div>
+
+  <div *ngIf="selectedType === 'Multiple'">
+
+  <div *ngFor="let opt of options; let i = index" style="margin-bottom: 8px;">
+
+    <input type="checkbox" disabled>
+
+    <input [(ngModel)]="options[i]" [placeholder]="'選項' + (i + 1)">
+
+    <button (click)="removeOption(i)" style="color: red; margin-left: 5px;">刪除</button>
+
+  </div> <button (click)="addOption()">+ 新增選項</button>
+
+</div>
+
+  <div *ngIf="selectedType === 'shortAnswer'">
+    <h3>簡答題</h3>
+    <input type="text" placeholder="使用者將在此簡答...">
+  </div>
+
+<div style="display: flex; gap: 40px; padding: 20px;">
+
+  <div style="flex: 1; border-right: 1px solid #ccc; padding-right: 20px;">
+    <h2>題目設定區</h2>
+    <button (click)="saveQuestion()">儲存題目</button>
+  </div>
+
+  <div style="flex: 1;">
+    <h2>已儲存的題目預覽</h2>
+
+    <div *ngIf="savedQuestions.length === 0" style="color: gray;">
+      目前還沒有儲存任何題目。
+    </div>
+
+    <div *ngFor="let q of savedQuestions; let i = index"
+         style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 8px;">
+
+      <strong>第 {{i + 1}} 題：{{ q.title }}</strong>
+      <span style="font-size: 0.8em; color: blue;"> ({{ q.type }})</span>
+
+      <ul *ngIf="q.type !== 'shortAnswer'">
+        <li *ngFor="let opt of q.options">{{ opt }}</li>
+      </ul>
+
+      <div *ngIf="q.type === 'shortAnswer'" style="color: #666; font-style: italic;">
+        [簡答題區域]
+      </div>
+    </div>
+  </div>
+
+</div>

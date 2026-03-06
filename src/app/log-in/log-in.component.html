@@ -1,0 +1,8 @@
+<div class="divCss">
+  <h5>會員手機：<input [(ngModel)]="userphone" ></h5>
+  <h5>密碼：<input [(ngModel)]="password"></h5>
+  <button (click)="login()">登入</button>
+  <!-- 只要連結沒有反應，先查看ts檔是否有import routerlink -->
+   <p>還沒有帳號?</p><button (click)="goToRegister()">註冊</button>
+   <button>忘記密碼</button>
+</div>
