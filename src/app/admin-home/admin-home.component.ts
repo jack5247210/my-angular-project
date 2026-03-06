@@ -87,6 +87,7 @@ export class AdminComponent implements OnInit, AfterViewInit {  // 加上 AfterV
             status: quiz.published ? '已發布' : '未發布',   // 簡單轉換，可依實際需求調整
             startTime: quiz.startDate,
             endTime: quiz.endDate,
+
             result: '前往'   // 暫時固定為「前往」
           }));
           this.dataSource.data = quizList;   // 更新表格資料
@@ -189,3 +190,15 @@ export interface PeriodicElement {
 
 // 原本的假資料現在用不到了，可以移除或保留作為備用
 // const ELEMENT_DATA: PeriodicElement[] = [ ... ];
+const ELEMENT_DATA: PeriodicElement[] = [
+  { position: 1, name: '問卷 A', status: '已完成', startTime: '2025/01/01', endTime: '2025/01/02', result: '前往' },
+  { position: 2, name: '問卷 B', status: '已完成', startTime: '2025/01/05', endTime: '2025/01/06', result: '前往' },
+  { position: 3, name: '問卷 C', status: '已過期', startTime: '2024/12/01', endTime: '2024/12/31',result: 'N/A', },
+  { position: 4, name: '問卷 D', status: '已完成', startTime: '2025/02/10', endTime: '2025/03/12', result: '前往' },
+  { position: 5, name: '問卷 E', status: '已完成', startTime: '2025/03/01', endTime: '2025/04/03', result: '前往' },
+  { position: 6, name: '問卷 F', status: '已完成', startTime: '2025/04/15', endTime: '2025/05/17', result: '前往' },
+  { position: 7, name: '問卷 G', status: '已過期', startTime: '2025/05/01', endTime: '2025/06/03',result: 'N/A', },
+  { position: 8, name: '問卷 H', status: '已完成', startTime: '2025/09/20', endTime: '2025/07/22', result: '前往' },
+  { position: 9, name: '最佳服務生票選', status: '已完成', startTime: '2025/10/07', endTime: '2025/11/09', result: '前往' },
+  { position: 10, name: '顧客滿意度調查', status: '進行中', startTime: '2025/01/01', endTime: '2025/12/31', result: '前往' },
+];

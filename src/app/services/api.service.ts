@@ -17,7 +17,8 @@ export class ApiService {
   // 3. GET 方法 (用大括號包起來 { })
   getApi(url: string): Observable<any> {
     // 這裡會把 baseUrl 拼起來，變成 http://localhost:8080/user/login 之類的
-    return this.http.get(this.baseUrl + url);
+    // GET 的電話撥打方式：網址, { 額外的設定 }
+return this.http.get(this.baseUrl + url, { withCredentials: true });
   }
 
   // 4. POST 方法 (用大括號包起來 { })
