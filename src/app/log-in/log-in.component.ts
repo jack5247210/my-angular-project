@@ -28,7 +28,8 @@ export class LogInComponent {
   login() {
   const loginData = {
     userphone: this.userphone,
-    password: this.password
+    password: this.password,
+    name: this.exampleService.name
   };
 
   this.apiService.postApi('login', loginData).subscribe({
@@ -38,7 +39,8 @@ export class LogInComponent {
 
         // 儲存使用者資訊到 Service
         this.exampleService.userphone = this.userphone;
-        this.exampleService.isAdmin = res.admin;  // 從後端取得管理員狀態
+        this.exampleService.isAdmin = res.admin;
+        this.exampleService.name = res.name;  // 從後端取得管理員狀態
 
         // 根據管理員狀態導向
         if (res.admin) {

@@ -47,11 +47,13 @@ export class homeComponent {
     private apiService: ApiService
   ) {
     this.memberTel = this.exampleService.userphone;
+    this.memberName = this.exampleService.name;
 
 
   }
   memberTel!: string;
   passWord!: string;
+  memberName:string;
 
   // 注入彈出視窗服務，未來可以用來開新視窗
   private dialog = inject(MatDialog);
