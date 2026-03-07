@@ -55,6 +55,38 @@ export class homeComponent {
   passWord!: string;
   memberName:string;
 
+  ngOnInit(): void {
+    this.loadQuizzes();   // 一進入頁面就載入問卷資料
+  }
+
+  // 載入問卷資料的方法
+  loadQuizzes() {
+    this.apiService.getApi('quiz/getAll').subscribe({
+      next: (res) => {
+        console.log('後端回傳的資料：', res);  // 先看資料長怎樣
+        if (res.code === 200) {
+          // 把後端的 quizList 轉成表格需要的 PeriodicElement 陣列
+          const quizList = res.quizList.map((quiz: any) => ({
+            quizId: quiz.quizId,
+            title: quiz.title,
+            description :quiz.description,
+            status: quiz.published ? '已發布' : '未發布',   // 簡單轉換，可依實際需求調整
+            startDate: quiz.startDate,
+            endDate: quiz.endDate,
+            result: '前往'   // 暫時固定為「前往」
+          }));
+          this.dataSource.data = quizList;   // 更新表格資料
+        } else {
+          alert('取得問卷失敗：' + res.message);
+        }
+      },
+      error: (err) => {
+        console.error('API 錯誤', err);
+        alert('伺服器發生錯誤，請稍後再試');
+      }
+    });
+  }
+
   // 注入彈出視窗服務，未來可以用來開新視窗
   private dialog = inject(MatDialog);
 
@@ -71,7 +103,7 @@ export class homeComponent {
     // 定義表格的「過濾規則」
     this.dataSource.filterPredicate = (data: PeriodicElement, filter: string) => {
       // 取得該列資料的開始時間，並轉成時間戳記
-      const dataTime = new Date(data.startTime).getTime();
+      const dataTime = new Date(data.startDate).getTime();
       // 判斷該資料的時間是否在我們選取的範圍內
       return dataTime >= startTime && dataTime <= endTime;
     };
@@ -83,13 +115,13 @@ export class homeComponent {
   }
 
   // 定義要在表格中顯示哪些欄位（順序依照陣列排列）
-  displayedColumns: string[] = ['position', 'name', 'status', 'startTime', 'endTime', 'result'];
+  displayedColumns: string[] = ['quizId', 'title', 'description', 'status', 'startDate', 'endDate', 'result'];
 
   // 注入語音播報員服務（用於無障礙）
   private _liveAnnouncer = inject(LiveAnnouncer);
 
-  // 建立表格的資料來源，並塞入初始資料 (ELEMENT_DATA)
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  // 建立表格的資料來源，初始為空陣列（之後會從 API 載入）
+    dataSource = new MatTableDataSource<PeriodicElement>([]);  // 改為空陣列
 
   // 透過 ViewChild 取得 HTML 裡的排序零件與分頁零件
   @ViewChild(MatSort) sort!: MatSort;
@@ -134,25 +166,16 @@ export class homeComponent {
 
 // 定義資料的「規格」，這是一張問卷資料必須具備的欄位
 export interface PeriodicElement {
-  name: string;
-  position: number;
+  quizId: number;
+  title: string;
+  description:string;
   status: string; // 新增狀態欄位
+  startDate: string; // 新增開始時間欄位
+  endDate: string; // 新增結束時間欄位
   result: string; // 新增結果欄位
-  startTime: string; // 新增開始時間欄位
-  endTime: string; // 新增結束時間欄位
 }
 
-// 實際的資料內容 (陣列)
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: '問卷 A', status: '已完成', startTime: '2025/01/01', endTime: '2025/01/02', result: '前往' },
-  { position: 2, name: '問卷 B', status: '已完成', startTime: '2025/01/05', endTime: '2025/01/06', result: '前往' },
-  { position: 3, name: '問卷 C', status: '已過期', startTime: '2024/12/01', endTime: '2024/12/31',result: 'N/A', },
-  { position: 4, name: '問卷 D', status: '已完成', startTime: '2025/02/10', endTime: '2025/03/12', result: '前往' },
-  { position: 5, name: '問卷 E', status: '已完成', startTime: '2025/03/01', endTime: '2025/04/03', result: '前往' },
-  { position: 6, name: '問卷 F', status: '已完成', startTime: '2025/04/15', endTime: '2025/05/17', result: '前往' },
-  { position: 7, name: '問卷 G', status: '已過期', startTime: '2025/05/01', endTime: '2025/06/03',result: 'N/A', },
-  { position: 8, name: '問卷 H', status: '已完成', startTime: '2025/09/20', endTime: '2025/07/22', result: '前往' },
-  { position: 9, name: '最佳服務生票選', status: '已完成', startTime: '2025/10/07', endTime: '2025/11/09', result: '前往' },
-  { position: 10, name: '顧客滿意度調查', status: '進行中', startTime: '2025/01/01', endTime: '2025/12/31', result: '前往' },
-];
+
+
+
 
