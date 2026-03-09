@@ -11,6 +11,11 @@ export class ExampleService {
   age!: number;
   isAdmin: boolean = false;
 
+  quiztitle!: string;
+  description!: string;
+  startDay!: string;
+  endDay!: string;
+
 
   constructor() { }
 }

@@ -1,17 +1,22 @@
 <h1>問卷題目設定</h1>
-<p>題目</p><input type="text" [(ngModel)]="questionTitle" placeholder="請輸入題目...">
+<p>問卷名稱</p>{{ quiztitle }}
+<p>問卷描述</p>{{ description }}
+<p>開始日期</p>{{ startDay }}
+<p>結束日期</p>{{ endDay }}
 <div style="margin-bottom: 20px;">
+  <p>題目問題</p><input [(ngModel)]="question">
+  <p>是否必填</p><input type="checkbox" [(ngModel)]="required">
     <label for="typeSelect">選擇題目類型：</label>
     <select id="typeSelect" [(ngModel)]="selectedType">
       <option value="Single">單選題</option>
       <option value="Multiple">多選題</option>
-      <option value="shortAnswer">簡答題</option>
+      <option value="text">簡答題</option>
     </select>
   </div>
 
   <div *ngIf="selectedType === 'Single'">
 
-  <div *ngFor="let opt of options; let i = index" style="margin-bottom: 8px;">
+  <div *ngFor="let opt of options; let i = index; trackBy: trackByIndex">
 <!-- 鎖定iput type是radio -->
     <input type="radio" disabled>
 
@@ -24,7 +29,7 @@
 
   <div *ngIf="selectedType === 'Multiple'">
 
-  <div *ngFor="let opt of options; let i = index" style="margin-bottom: 8px;">
+  <div *ngFor="let opt of options; let i = index; trackBy: trackByIndex">
 
     <input type="checkbox" disabled>
 
@@ -36,7 +41,7 @@
 
 </div>
 
-  <div *ngIf="selectedType === 'shortAnswer'">
+  <div *ngIf="selectedType === 'text'">
     <h3>簡答題</h3>
     <input type="text" placeholder="使用者將在此簡答...">
   </div>
@@ -58,17 +63,17 @@
     <div *ngFor="let q of savedQuestions; let i = index"
          style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 8px;">
 
-      <strong>第 {{i + 1}} 題：{{ q.title }}</strong>
+      <strong>第 {{i + 1}} 題：{{ q.question }}</strong>
       <span style="font-size: 0.8em; color: blue;"> ({{ q.type }})</span>
 
-      <ul *ngIf="q.type !== 'shortAnswer'">
+      <ul *ngIf="q.type !== 'tex'">
         <li *ngFor="let opt of q.options">{{ opt }}</li>
       </ul>
 
-      <div *ngIf="q.type === 'shortAnswer'" style="color: #666; font-style: italic;">
+      <div *ngIf="q.type === 'text'" style="color: #666; font-style: italic;">
         [簡答題區域]
       </div>
     </div>
   </div>
-
+  <button (click)="finalCreate()">完成並送出問卷</button>
 </div>

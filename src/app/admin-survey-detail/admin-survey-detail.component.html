@@ -1,7 +1,8 @@
 <div>
 <h1>問卷基本設定</h1>
-<p>問卷名稱</p><input>
-<p>開始日期</p><input type="date" name="startday" id="startday" [(ngModel)]="currentDay">
-<p>結束日期</p><input type="date" name="endDate" id="endDate">
+<p>問卷名稱</p><input [(ngModel)]="quiztitle">
+<p>問卷描述</p><input [(ngModel)]="description">
+<p>開始日期</p><input type="date" name="startday" id="startday" [(ngModel)]="startDay">
+<p>結束日期</p><input type="date" name="endDate" id="endDate" [(ngModel)]="endDay">
 </div>
 <button (click)="surveyQuestion()">下一步</button>
